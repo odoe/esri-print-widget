@@ -24,7 +24,6 @@ define([
   esriRequest,
   template
 ) {
-  'use strict';
 
   function head(t) {
     return t[0];
@@ -76,7 +75,7 @@ define([
       }).then(lang.hitch(this, '_printTemplates'));
 
       this.own(
-        on(dom.byId('print-start'), a11yclick, lang.hitch(this, '_printMap'))
+        on(this.printBtn, a11yclick, lang.hitch(this, '_printMap'))
       );
     },
 
