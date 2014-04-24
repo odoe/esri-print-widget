@@ -1,8 +1,13 @@
 /*global define, describe*/
+/*jshint expr:true*/
 define([
-  'widgets/print/printdialog'
+  'widgets/print/printdialog',
+  'dojo/dom-class',
+  'esri/tasks/PrintTemplate'
 ], function(
-  Widget
+  Widget,
+  domClass,
+  PrintTemplate
 ) {
 
   'use strict';
@@ -12,13 +17,15 @@ define([
   describe(
     'widgets/print/printdialog', function() {
 
-    var templateNames = [1,2,3];
+    var templateNames = ['MAP_ONLY', 'TEST_ONLY'];
 
     var options = {
       map: {
         spatialReference: 1234
       },
-      templateNames: templateNames
+      templateNames: templateNames,
+      printUrl: '/test/test',
+      printParams: {}
     };
 
     var widget;
@@ -30,7 +37,7 @@ define([
       widget.dialog = {
         destroyRecursive: function(){},
         show: function(){}
-      }
+      };
     });
 
     afterEach(function() {
@@ -92,6 +99,90 @@ define([
 
       it('will call show of child dialog', function() {
         expect(widget.dialog.show.calledOnce).to.be.ok;
+      });
+
+    });
+
+    describe('#_printSetup', function() {
+
+      beforeEach(function() {
+        Widget.prototype._printSetup.restore();
+        widget._printSetup();
+      });
+      afterEach(function() {
+        sinon.stub(Widget.prototype, '_printSetup').returns(function(){});
+      });
+
+      it('will create a new PrintTask', function() {
+        expect(widget._printTask).to.be.ok;
+      });
+
+      it('will set up a new print template', function() {
+        expect(widget._printTemplate).to.be.instanceOf(PrintTemplate);
+      });
+
+      it('will ask for PDF prints', function() {
+        expect(widget._printTemplate.format = 'PDF');
+      });
+
+    });
+
+    describe('#_initDialog', function() {
+
+      beforeEach(function() {
+        Widget.prototype._initDialog.restore();
+        widget._initDialog();
+      });
+      afterEach(function() {
+        sinon.stub(Widget.prototype, '_initDialog').returns(function(){});
+      });
+
+      it('will create a new dialog on widget', function() {
+        expect(widget.dialog).to.be.ok;
+      });
+
+    });
+
+    describe('#_printSelectedTemplate', function() {
+
+      var result = {
+        url: 'testurl'
+      };
+
+      beforeEach(function() {
+        widget._printTask = {
+          execute: function(params, callback){
+            callback(result);
+          }
+        };
+        widget._printTemplate = {};
+        sinon.stub(domClass, 'remove');
+        sinon.stub(domClass, 'add');
+        sinon.stub(window, 'open');
+        sinon.spy(widget._printTask, 'execute');
+        widget._printSelectedTemplate('test');
+      });
+      afterEach(function() {
+        widget._printTask.execute.restore();
+        domClass.remove.restore();
+        domClass.add.restore();
+        window.open.restore();
+      });
+
+      it('will show the progress meter', function() {
+        expect(domClass.remove.calledOnce).to.be.ok;
+      });
+
+      it('will assign given payout to print template', function() {
+        expect(widget._printTemplate.layout).to.eql('test');
+      });
+
+      it('will execute the print task', function() {
+        expect(widget._printTask.execute.calledOnce).to.be.ok;
+      });
+
+      it('will remove the progress meter', function() {
+        expect(domClass.add.calledOnce).to.be.ok;
       });
 
     });
