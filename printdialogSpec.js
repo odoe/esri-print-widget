@@ -3,11 +3,13 @@
 define([
   'widgets/print/printdialog',
   'dojo/dom-class',
-  'esri/tasks/PrintTemplate'
+  'esri/tasks/PrintTemplate',
+  'dijit/Dialog'
 ], function(
   Widget,
   domClass,
-  PrintTemplate
+  PrintTemplate,
+  Dialog
 ) {
 
   'use strict';
@@ -137,8 +139,8 @@ define([
         sinon.stub(Widget.prototype, '_initDialog').returns(function(){});
       });
 
-      it('will create a new dialog on widget', function() {
-        expect(widget.dialog).to.be.ok;
+      it('will create a new instance of dialog on widget', function() {
+        expect(widget.dialog).to.be.instanceOf(Dialog);
       });
 
     });
