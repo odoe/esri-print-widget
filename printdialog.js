@@ -22,7 +22,6 @@ define([
   domConstruct, domClass,
   PrintTask, PrintParameters, PrintTemplate
 ) {
-  'use strict';
 
   return declare([], {
 
