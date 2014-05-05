@@ -43,13 +43,8 @@ define([
 
     loaded: false,
 
-    constructor: function(options, srcRefNode) {
-
-      // mix in settings and defaults
-      declare.safeMixin(this.options, options);
-
-      // widget ,node
-      this.domNode = srcRefNode;
+    constructor: function(options) {
+      this.options = options || {};
 
       // widget map
       this.map = this.options.map;

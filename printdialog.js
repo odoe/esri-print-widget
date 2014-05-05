@@ -23,7 +23,7 @@ define([
   PrintTask, PrintParameters, PrintTemplate
 ) {
 
-  return declare([], {
+  return declare(null, {
 
     options: {},
 
@@ -41,8 +41,7 @@ define([
       if (!options.templateNames) {
         throw new Error('Options must include list of templates');
       }
-      // mix in settings and defaults
-      declare.safeMixin(this.options, options);
+      this.options = options || {};
 
       this.map = this.options.map;
 
@@ -114,8 +113,7 @@ define([
       }).placeAt(form.containerNode);
 
       this._progressNode = domConstruct.create('div');
-      domClass.add(this._progressNode, 'progress-spin');
-      domClass.add(this._progressNode, 'hidden-node');
+      domClass.add(this._progressNode, 'progress-spin hidden-node');
       domConstruct.place(this._progressNode, form.containerNode);
 
       this.dialog = new Dialog({
