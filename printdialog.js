@@ -1,5 +1,3 @@
-/*global define*/
-/*jshint laxcomma:true*/
 define([
   'dojo/_base/declare',
   'dojo/_base/lang',
@@ -92,9 +90,10 @@ define([
 
     _initDialog: function() {
       // build the menu that will have templates
-      var menu, form;
-      menu = new DropDownMenu({ style: 'display: none;' });
-      form = new Form();
+      var menu = new DropDownMenu({
+        style: 'display: none;'
+      });
+      var form = new Form();
 
       arrayUtil.forEach(this.options.templateNames, function(name) {
         menu.addChild(new MenuItem({
@@ -129,4 +128,3 @@ define([
   });
 
 });
-

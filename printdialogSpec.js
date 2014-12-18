@@ -1,5 +1,3 @@
-/*global define, describe*/
-/*jshint expr:true*/
 define([
   'widgets/print/printdialog',
   'dojo/dom-class',
