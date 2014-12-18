@@ -13,7 +13,7 @@ define([
   'dijit/_TemplatedMixin',
   'widgets/print/printdialog',
   'esri/request',
-  'text!widgets/print/print.tpl.html',
+  'text!widgets/print/print.tpl.html'
 ], function(
   declare,
   lang, arrayUtil,
